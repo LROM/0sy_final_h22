@@ -38,20 +38,80 @@ namespace ExcelToExcel.Tests
         /// <summary>
         /// Le fichier d'entrée est vide. La propriété Message devrait être vide.
         /// </summary>
+        [Fact]
         public void InputFile_IsEmpty_Message_ShouldBe_Empty()
         {
             /// TODO : Q01a. Compléter le test
+            /// Arrange
+            vm = new MainViewModel(); 
+            /// 
+            /// Act
+            var actual = vm.SaveCommand.CanExecute(" ");
+            /// 
+            /// 
             /// TODO : Q01b. Ne pas briser la batterie de tests après ce tests
             /// 
-            Assert.True(false);
+            ///      
+            /// Assert
+            Assert.True(!actual);          
         }
 
+
         // TODO : Q02 : Créer le test CanExecuteSaveCommand_FileNotLoaded_ShouldReturn_False
+            [Fact]
+            public void CanExecuteSaveCommand_FileNotLoaded_ShouldReturn_False ()
+        {
+            //Arrange
+            var bad_filename = Path.Combine(excelFilesPath, fn);
+            vm.InputFilename = bad_filename;
+            vm.LoadContentCommand.Execute(" ");
+
+            //Act
+            var actual = vm.SaveCommand.CanExecute(" ");
+
+            //Assert
+            Assert.False(actual);
+
+        }
+
 
         // TODO : Q03 : Créer le test CanExecuteSaveCommand_OutputFileInvalid_ShouldReturn_False
+            [Theory]
+            [InlineData("invalide_fichier_type.txt")]
+            public void CanExecuteSaveCommand_OutputFileInvalid_ShouldReturn_False (string fn)
+            {
+            //Arrange
+            //vm.OutputFilename = " ";
+         
+            var goodInputfile = Path.Combine(excelFilesPath, fn);
+            vm.LoadContentCommand.Execute("");
+            //Act
+            var actual = vm.SaveCommand.CanExecute("");
+
+            //Assert
+            Assert.False(actual);
+
+        }
 
         // TODO : Q04 : Créer le test CanExecuteSaveCommand_OutputFileValid_ShouldReturn_True(string filename)
+            [Theory]
+            [InlineData("liste_especes.xlsx")]
+            public void CanExecuteSaveCommand_OutputFileValid_ShouldReturn_True(string filename)
+            {
+            //Arrange
+            var goodInputfile = Path.Combine(excelFilesPath, filename);
+            vm.InputFilename = goodInputfile;
+            vm.LoadContentCommand.Execute(" ");
+            var goodOutputfile = Path.Combine(excelFilesPath, filename);
+            vm.OutputFilename = goodInputfile;
 
+            //Act
+            var actual = vm.SaveCommand.CanExecute("");
+
+            //Assert
+
+            Assert.True(actual);
+        }
 
         #endregion
 

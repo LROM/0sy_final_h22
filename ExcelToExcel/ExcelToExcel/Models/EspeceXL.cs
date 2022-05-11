@@ -133,6 +133,12 @@ namespace ExcelToExcel.Models
         {
             /// TODO : Q05 : Ajouter les validations pour passer les tests
             /// 
+            /// 
+            if (!validFileContent())
+            {
+                throw new ArgumentException("Nom du fichier invalid!");
+            }
+
 
             var output = GetCSV();
 
@@ -146,6 +152,11 @@ namespace ExcelToExcel.Models
         {
             /// TODO : Q06 Ajouter les validations pour passer les tests
             /// 
+            if (!validFileContent())
+            {
+                throw new ArgumentException("Nom du fichier invalid!");
+            }
+
             var lst = GetAsList();
 
             string output = JsonConvert.SerializeObject(lst, Formatting.Indented);
@@ -159,7 +170,11 @@ namespace ExcelToExcel.Models
         public void SaveToFile(string filename, bool overwrite = false)
         {
             /// TODO : Q08 Ajouter les validations pour passer les tests
-            
+           
+            if (!validFileContent())
+            {
+                throw new ArgumentException("Nom du fichier invalid!");
+            }
             var ext = Path.GetExtension(filename).ToLower();
 
             switch (ext)
@@ -175,8 +190,8 @@ namespace ExcelToExcel.Models
                     break;
                 default:
                     /// TODO : Q09 Lancer l'exception ArgumentException avec le message "Type inconnu" et le nom du paramètre filename
-                    /// 
-                    break;
+                    throw new ArgumentException("Type inconnu");
+                   
             }
         }
 
